@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Q2 2026 · Estudio Creativo Vega SL</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f172a;--surface:#1e293b;--surface2:#243044;--border:#334155;
+  --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  --green:#4ade80;--green-bg:rgba(74,222,128,.12);--green-border:rgba(74,222,128,.28);
+  --red:#f87171;--red-bg:rgba(248,113,113,.12);--red-border:rgba(248,113,113,.28);
+  --blue:#60a5fa;--blue-bg:rgba(96,165,250,.12);--blue-border:rgba(96,165,250,.28);
+  --amber:#fbbf24;--amber-bg:rgba(251,191,36,.12);--amber-border:rgba(251,191,36,.3);
+  --purple:#c084fc;--purple-bg:rgba(192,132,252,.12);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,.1);--teal-border:rgba(45,212,191,.3);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0f3460 0%,#1e293b 65%);padding:20px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.header-left h1{font-size:1.15rem;font-weight:800;letter-spacing:-.01em}
+.header-left h1 .dim{color:var(--muted2);font-weight:400}
+.header-left h1 .accent{color:var(--teal)}
+.header-left p{font-size:.73rem;color:var(--muted);margin-top:3px}
+.header-right{display:flex;gap:12px;align-items:center}
+.hbadge{padding:5px 12px;border-radius:20px;font-size:.72rem;font-weight:700;border:1px solid}
+.hbadge-q{background:var(--teal-bg);border-color:var(--teal-border);color:var(--teal)}
+.hbadge-n{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue)}
+
+/* NAV */
+nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 32px;display:flex;overflow-x:auto;gap:4px}
+nav a{display:inline-block;padding:10px 14px;font-size:.75rem;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+nav a:hover{color:var(--text);border-bottom-color:var(--teal)}
+
+/* LAYOUT */
+.wrap{max-width:1440px;margin:0 auto;padding:26px 32px}
+section{margin-bottom:30px}
+.section-title{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.green::before{background:var(--green)}
+.kpi.blue::before{background:var(--blue)}
+.kpi.amber::before{background:var(--amber)}
+.kpi.purple::before{background:var(--purple)}
+.kpi.red::before{background:var(--red)}
+.kpi.teal::before{background:var(--teal)}
+.kpi__label{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px}
+.kpi__value{font-size:1.5rem;font-weight:800;line-height:1}
+.kpi__sub{font-size:.68rem;color:var(--muted);margin-top:6px}
+.kpi__sub b{color:var(--muted2)}
+
+/* COBRO STATUS */
+.cobro-banner{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:30px}
+.cobro-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.cobro-header h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.cobro-amounts{display:flex;gap:24px}
+.cobro-amt{font-size:.82rem}
+.cobro-amt .lbl{color:var(--muted2);margin-right:6px}
+.cobro-amt .val-g{color:var(--green);font-weight:700}
+.cobro-amt .val-a{color:var(--amber);font-weight:700}
+.cobro-bar-wrap{height:10px;background:var(--border);border-radius:6px;overflow:hidden;display:flex}
+.cobro-bar-g{height:100%;background:linear-gradient(90deg,#22c55e,#4ade80);border-radius:6px 0 0 6px;transition:width .5s}
+.cobro-bar-a{height:100%;background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.cobro-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:.68rem;color:var(--muted)}
+
+/* CHART GRID */
+.chart-grid{display:grid;grid-template-columns:5fr 4fr;gap:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px}
+.card__title{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:16px}
+
+.chart-svg{width:100%;display:block}
+.chart-meta{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.72rem;color:var(--muted)}
+.chart-meta span strong{color:var(--text)}
+
+/* CLIENT ROWS */
+.client-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.client-row:last-of-type{border-bottom:none}
+.client-name{font-size:.76rem;font-weight:600;flex:0 0 160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.client-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.client-fill{height:100%;border-radius:3px}
+.client-amt{font-size:.76rem;font-weight:700;text-align:right;min-width:68px}
+.client-pct{font-size:.68rem;color:var(--muted);min-width:36px;text-align:right}
+.client-badge{font-size:.62rem;font-weight:700;padding:1px 6px;border-radius:3px;flex-shrink:0}
+.cb-ok{background:var(--green-bg);color:var(--green)}
+.cb-pend{background:var(--amber-bg);color:var(--amber)}
+
+/* GASTOS */
+.gasto-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.gasto-row:last-child{border-bottom:none}
+.gasto-name{font-size:.75rem;color:var(--muted2);flex:1}
+.gasto-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.gasto-fill{height:100%;border-radius:2px;background:var(--red)}
+.gasto-amt{font-size:.76rem;font-weight:700;color:var(--red);min-width:64px;text-align:right}
+.gasto-pct{font-size:.67rem;color:var(--muted);min-width:32px;text-align:right}
+
+/* IVA */
+.q-grid{display:grid;grid-template-columns:1fr;gap:0}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px}
+.q-title{font-size:.85rem;font-weight:700;color:var(--teal);margin-bottom:16px}
+.q-rows{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.q-cell{padding:14px 16px;border-right:1px solid var(--border)}
+.q-cell:last-child{border-right:none}
+.q-cell-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+.q-cell-val{font-size:1.1rem;font-weight:800}
+.q-cell-sub{font-size:.67rem;color:var(--muted);margin-top:3px}
+.q-total-row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:12px 16px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px}
+.q-total-row span:first-child{font-size:.78rem;font-weight:700}
+.q-total-val{color:var(--amber);font-size:1.15rem;font-weight:800}
+
+/* TABLE */
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.fbtn{padding:4px 13px;font-size:.73rem;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;transition:all .15s}
+.fbtn:hover,.fbtn.active{background:var(--teal);border-color:var(--teal);color:#0f172a;font-weight:700}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.77rem;min-width:860px}
+thead th{background:#162035;padding:9px 13px;text-align:left;font-size:.63rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap}
+tbody tr{border-top:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+tbody td{padding:9px 13px;vertical-align:middle}
+.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.badge-i{background:var(--green-bg);color:var(--green)}
+.badge-g{background:var(--red-bg);color:var(--red)}
+.badge-cob{background:var(--green-bg);color:var(--green);padding:2px 7px}
+.badge-pend{background:var(--amber-bg);color:var(--amber);padding:2px 7px}
+td.r{text-align:right}
+.amt-g{color:var(--green);font-weight:700}
+.amt-r{color:var(--red);font-weight:700}
+.amt-m{color:var(--muted)}
+.amt-a{color:var(--amber);font-weight:700}
+.amt-p{color:var(--purple)}
+.fn{font-weight:600}
+.dt{color:var(--muted2);font-size:.73rem}
+.concept{color:var(--muted2);max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.totals-row td{border-top:2px solid var(--border)!important;background:rgba(255,255,255,.025);font-weight:700}
+
+/* ALERTS */
+.alerts{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.alert-item{display:flex;gap:14px;padding:13px 20px;border-bottom:1px solid var(--border);font-size:.79rem}
+.alert-item:last-child{border-bottom:none}
+.alert-icon{font-size:1rem;flex-shrink:0;margin-top:2px}
+.alert-body strong{display:block;margin-bottom:3px;font-size:.82rem}
+.alert-body span{color:var(--muted2);line-height:1.5}
+
+footer{text-align:center;padding:18px 32px;font-size:.69rem;color:var(--muted);border-top:1px solid var(--border);margin-top:8px}
+
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.chart-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.wrap{padding:14px 16px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <h1><span class="accent">Q2 2026</span> <span class="dim">·</span> Dashboard Facturación <span class="dim">·</span> Estudio Creativo Vega SL</h1>
+    <p>CIF B-12345678 · Calle Mayor 23, 3ºB · 28013 Madrid · hola@estudiovega.es · Periodo: 01/04/2026 – 20/05/2026</p>
+  </div>
+  <div class="header-right">
+    <div class="hbadge hbadge-q">Q2 2026</div>
+    <div class="hbadge hbadge-n">10 facturas · Actualizado 09/05/2026</div>
+  </div>
+</header>
+
+<nav>
+  <a href="#kpis">Resumen</a>
+  <a href="#cobro">Estado cobro</a>
+  <a href="#evolucion">Evolución</a>
+  <a href="#iva">IVA Q2</a>
+  <a href="#detalle">Detalle</a>
+  <a href="#alertas">Alertas</a>
+</nav>
+
+<div class="wrap">
+
+<!-- KPIs -->
+<section id="kpis">
+  <div class="section-title">Indicadores Q2 2026</div>
+  <div class="kpi-grid">
+    <div class="kpi green">
+      <div class="kpi__label">Facturación neta</div>
+      <div class="kpi__value" style="color:var(--green)">6.100 €</div>
+      <div class="kpi__sub">Base imponible · <b>5 facturas emitidas</b></div>
+    </div>
+    <div class="kpi teal">
+      <div class="kpi__label">Balance neto</div>
+      <div class="kpi__value" style="color:var(--teal)">5.312 €</div>
+      <div class="kpi__sub">Ingresos 6.100 € – Gastos 787,44 €</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi__label">IVA a liquidar</div>
+      <div class="kpi__value" style="color:var(--amber)">1.115 €</div>
+      <div class="kpi__sub">Repercutido 1.281 € – Soportado 165 €</div>
+    </div>
+    <div class="kpi purple">
+      <div class="kpi__label">IRPF retenido</div>
+      <div class="kpi__value" style="color:var(--purple)">915 €</div>
+      <div class="kpi__sub">Ya descontado por los clientes</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kpi__label">Ticket medio</div>
+      <div class="kpi__value" style="color:var(--blue)">1.220 €</div>
+      <div class="kpi__sub">Base imponible media · 5 facturas</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi__label">Gastos totales</div>
+      <div class="kpi__value" style="color:var(--red)">787 €</div>
+      <div class="kpi__sub">12,9 % sobre facturación · <b>5 facturas</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTADO COBRO -->
+<section id="cobro">
+  <div class="section-title">Estado de cobro</div>
+  <div class="cobro-banner">
+    <div class="cobro-header">
+      <h3>Cobrado vs Pendiente — Total facturado: 6.466 €</h3>
+      <div class="cobro-amounts">
+        <div class="cobro-amt"><span class="lbl">Cobrado</span><span class="val-g">2.809 € · 43,4 %</span></div>
+        <div class="cobro-amt"><span class="lbl">Pendiente</span><span class="val-a">3.657 € · 56,6 %</span></div>
+      </div>
+    </div>
+    <div class="cobro-bar-wrap">
+      <div class="cobro-bar-g" style="width:43.4%"></div>
+      <div class="cobro-bar-a" style="width:56.6%"></div>
+    </div>
+    <div class="cobro-labels">
+      <span>F-2026-006 · F-2026-008 · F-2026-010</span>
+      <span>F-2026-007 (2.862 €) · F-2026-009 (795 €)</span>
+    </div>
+  </div>
+</section>
+
+<!-- EVOLUCIÓN + CLIENTES -->
+<section id="evolucion">
+  <div class="section-title">Evolución mensual y clientes</div>
+  <div class="chart-grid">
+
+    <div class="card">
+      <div class="card__title">Evolución mensual · Base imponible ingresos (€)</div>
+      <svg class="chart-svg" viewBox="0 0 520 255" xmlns="http://www.w3.org/2000/svg">
+        <!-- grid -->
+        <line x1="70" y1="10"  x2="510" y2="10"  stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="70" y1="54"  x2="510" y2="54"  stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="70" y1="99"  x2="510" y2="99"  stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="70" y1="143" x2="510" y2="143" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="70" y1="188" x2="510" y2="188" stroke="#334155" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="70" y1="210" x2="510" y2="210" stroke="#475569" stroke-width="1"/>
+        <line x1="70" y1="10"  x2="70"  y2="210" stroke="#475569" stroke-width="1"/>
+        <!-- y labels (max 4500) -->
+        <text x="65" y="14"  text-anchor="end" fill="#64748b" font-size="11">4.500</text>
+        <text x="65" y="58"  text-anchor="end" fill="#64748b" font-size="11">3.375</text>
+        <text x="65" y="103" text-anchor="end" fill="#64748b" font-size="11">2.250</text>
+        <text x="65" y="147" text-anchor="end" fill="#64748b" font-size="11">1.125</text>
+        <text x="65" y="214" text-anchor="end" fill="#64748b" font-size="11">0</text>
+        <!-- Abril: 4150 → h=4150*200/4500=184.4 → y=25.6≈26 -->
+        <defs>
+          <linearGradient id="gAbr" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#2dd4bf" stop-opacity=".95"/>
+            <stop offset="100%" stop-color="#0d9488" stop-opacity=".8"/>
+          </linearGradient>
+          <linearGradient id="gMay" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#60a5fa" stop-opacity=".95"/>
+            <stop offset="100%" stop-color="#2563eb" stop-opacity=".8"/>
+          </linearGradient>
+        </defs>
+        <rect x="120" y="26" width="110" height="184" fill="url(#gAbr)" rx="4"/>
+        <text x="175" y="20"  text-anchor="middle" fill="#2dd4bf" font-size="13" font-weight="800">4.150 €</text>
+        <text x="175" y="228" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">Abril 2026</text>
+        <!-- 3 facturas desglose -->
+        <text x="175" y="242" text-anchor="middle" fill="#64748b" font-size="9">3 facturas</text>
+        <!-- Mayo: 1950 → h=1950*200/4500=86.7≈87 → y=123 -->
+        <rect x="290" y="123" width="110" height="87"  fill="url(#gMay)" rx="4"/>
+        <text x="345" y="117" text-anchor="middle" fill="#60a5fa" font-size="13" font-weight="800">1.950 €</text>
+        <text x="345" y="228" text-anchor="middle" fill="#94a3b8" font-size="11" font-weight="600">Mayo 2026</text>
+        <text x="345" y="242" text-anchor="middle" fill="#64748b" font-size="9">2 facturas · parcial</text>
+        <!-- leyenda -->
+        <rect x="100" y="252" width="10" height="7" fill="#2dd4bf" rx="1"/>
+        <text x="114" y="259" fill="#94a3b8" font-size="9">Abril (completo)</text>
+        <rect x="220" y="252" width="10" height="7" fill="#60a5fa" rx="1"/>
+        <text x="234" y="259" fill="#94a3b8" font-size="9">Mayo (hasta día 20)</text>
+      </svg>
+      <div class="chart-meta">
+        <span>Mejor mes: <strong>Abril — 4.150 €</strong></span>
+        <span>Mayo incompleto: <strong style="color:var(--muted)">1.950 € (hasta 20/05)</strong></span>
+        <span>Media mensual: <strong>3.050 €</strong></span>
+        <span>Ratio cobrado Q2: <strong style="color:var(--green)">43,4 %</strong></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__title">Top clientes · Base imponible</div>
+
+      <!-- Clínica Dental Sonrisa: 2700 (100%) -->
+      <div class="client-row">
+        <div class="client-name">Clínica Dental Sonrisa</div>
+        <div class="client-track"><div class="client-fill" style="width:100%;background:var(--teal)"></div></div>
+        <div class="client-amt" style="color:var(--teal)">2.700 €</div>
+        <div class="client-pct">44,3%</div>
+        <span class="client-badge cb-pend">Pend.</span>
+      </div>
+      <!-- Boutique Mariposa: 1200 (44.4%) -->
+      <div class="client-row">
+        <div class="client-name">Boutique Mariposa SL</div>
+        <div class="client-track"><div class="client-fill" style="width:44.4%;background:var(--green)"></div></div>
+        <div class="client-amt" style="color:var(--green)">1.200 €</div>
+        <div class="client-pct">19,7%</div>
+        <span class="client-badge cb-ok">Cobrada</span>
+      </div>
+      <!-- Café Aurora: 850 (31.5%) -->
+      <div class="client-row">
+        <div class="client-name">Café Aurora SL</div>
+        <div class="client-track"><div class="client-fill" style="width:31.5%;background:var(--green)"></div></div>
+        <div class="client-amt" style="color:var(--green)">850 €</div>
+        <div class="client-pct">13,9%</div>
+        <span class="client-badge cb-ok">Cobrada</span>
+      </div>
+      <!-- Hotel Costa Blanca: 750 (27.8%) -->
+      <div class="client-row">
+        <div class="client-name">Hotel Costa Blanca SA</div>
+        <div class="client-track"><div class="client-fill" style="width:27.8%;background:var(--blue)"></div></div>
+        <div class="client-amt" style="color:var(--blue)">750 €</div>
+        <div class="client-pct">12,3%</div>
+        <span class="client-badge cb-pend">Pend.</span>
+      </div>
+      <!-- Restaurante La Mesa: 600 (22.2%) -->
+      <div class="client-row">
+        <div class="client-name">Restaurante La Mesa SL</div>
+        <div class="client-track"><div class="client-fill" style="width:22.2%;background:var(--blue)"></div></div>
+        <div class="client-amt" style="color:var(--blue)">600 €</div>
+        <div class="client-pct">9,8%</div>
+        <span class="client-badge cb-ok">Cobrada</span>
+      </div>
+
+      <div style="margin-top:18px">
+        <div class="card__title" style="margin-bottom:10px">Gastos por proveedor (base 787,44 €)</div>
+        <!-- Impact Hub: 545 / 787.44 = 69.2% -->
+        <div class="gasto-row">
+          <div class="gasto-name">Impact Hub Madrid SL</div>
+          <div class="gasto-track"><div class="gasto-fill" style="width:69.2%"></div></div>
+          <div class="gasto-amt">545,00 €</div>
+          <div class="gasto-pct">69,2%</div>
+        </div>
+        <!-- Iberdrola: 132.50 / 787.44 = 16.8% -->
+        <div class="gasto-row">
+          <div class="gasto-name">Iberdrola Clientes SAU</div>
+          <div class="gasto-track"><div class="gasto-fill" style="width:16.8%;background:var(--amber)"></div></div>
+          <div class="gasto-amt" style="color:var(--amber)">132,50 €</div>
+          <div class="gasto-pct">16,8%</div>
+        </div>
+        <!-- Adobe: 59.99 / 787.44 = 7.6% -->
+        <div class="gasto-row">
+          <div class="gasto-name">Adobe Creative Cloud</div>
+          <div class="gasto-track"><div class="gasto-fill" style="width:7.6%;background:var(--muted)"></div></div>
+          <div class="gasto-amt" style="color:var(--muted2)">59,99 €</div>
+          <div class="gasto-pct">7,6%</div>
+        </div>
+        <!-- Telefónica: 49.95 / 787.44 = 6.3% -->
+        <div class="gasto-row">
+          <div class="gasto-name">Telefónica de España</div>
+          <div class="gasto-track"><div class="gasto-fill" style="width:6.3%;background:var(--muted)"></div></div>
+          <div class="gasto-amt" style="color:var(--muted2)">49,95 €</div>
+          <div class="gasto-pct">6,3%</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- IVA Q2 -->
+<section id="iva">
+  <div class="section-title">IVA trimestral Q2 2026 · Liquidación estimada (Modelo 303)</div>
+  <div class="q-card">
+    <div class="q-title">Q2 2026 · Abril – Mayo (parcial hasta 09/05/2026)</div>
+    <div class="q-rows">
+      <div class="q-cell">
+        <div class="q-cell-label">IVA repercutido</div>
+        <div class="q-cell-val" style="color:var(--red)">+1.281,00 €</div>
+        <div class="q-cell-sub">IVA cobrado a clientes · 5 facturas emitidas</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-cell-label">IVA soportado</div>
+        <div class="q-cell-val" style="color:var(--green)">−165,37 €</div>
+        <div class="q-cell-sub">IVA pagado a proveedores · 5 facturas recibidas</div>
+      </div>
+      <div class="q-cell">
+        <div class="q-cell-label">Base liquidable</div>
+        <div class="q-cell-val" style="color:var(--muted2)">1.115,63 €</div>
+        <div class="q-cell-sub">Repercutido – Soportado</div>
+      </div>
+    </div>
+    <div class="q-total-row">
+      <span>Estimación a ingresar Hacienda (Mod. 303 Q2)</span>
+      <span class="q-total-val">1.115,63 €</span>
+    </div>
+  </div>
+</section>
+
+<!-- DETALLE -->
+<section id="detalle">
+  <div class="section-title">Detalle de facturas</div>
+  <div class="filter-bar">
+    <button class="fbtn active" onclick="filterTable('todas',this)">Todas (10)</button>
+    <button class="fbtn" onclick="filterTable('ingreso',this)">Ingresos (5)</button>
+    <button class="fbtn" onclick="filterTable('gasto',this)">Gastos (5)</button>
+    <button class="fbtn" onclick="filterTable('cobrada',this)">Cobradas (3)</button>
+    <button class="fbtn" onclick="filterTable('pendiente',this)">Pendientes (2)</button>
+  </div>
+  <div class="table-wrap">
+    <table id="inv-table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nº Factura</th>
+          <th>Tipo</th>
+          <th>Empresa</th>
+          <th>Concepto</th>
+          <th style="text-align:right">Base</th>
+          <th style="text-align:right">IVA 21%</th>
+          <th style="text-align:right">IRPF</th>
+          <th style="text-align:right">Total</th>
+          <th>Estado</th>
+          <th>Fuente</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-t="ingreso" data-cobro="cobrada">
+          <td class="dt">04/04/2026</td>
+          <td class="fn">F-2026-006</td>
+          <td><span class="badge badge-i">Ingreso</span></td>
+          <td>Café Aurora SL</td>
+          <td class="concept">Diseño carta estacional + Impresión cartas</td>
+          <td class="r amt-g">850,00 €</td>
+          <td class="r amt-m">178,50 €</td>
+          <td class="r amt-p">−127,50 €</td>
+          <td class="r amt-g">901,00 €</td>
+          <td><span class="badge badge-cob">Cobrada</span></td>
+          <td class="dt" style="font-size:.68rem">PDF</td>
+        </tr>
+        <tr data-t="ingreso" data-cobro="pendiente">
+          <td class="dt">18/04/2026</td>
+          <td class="fn">F-2026-007</td>
+          <td><span class="badge badge-i">Ingreso</span></td>
+          <td>Clínica Dental Sonrisa SL</td>
+          <td class="concept">Web + módulo citas + sesión fotográfica</td>
+          <td class="r amt-g">2.700,00 €</td>
+          <td class="r amt-m">567,00 €</td>
+          <td class="r amt-p">−405,00 €</td>
+          <td class="r amt-a">2.862,00 €</td>
+          <td><span class="badge badge-pend">Pendiente</span></td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="ingreso" data-cobro="cobrada">
+          <td class="dt">25/04/2026</td>
+          <td class="fn">F-2026-008</td>
+          <td><span class="badge badge-i">Ingreso</span></td>
+          <td>Restaurante La Mesa SL</td>
+          <td class="concept">Gestión redes sociales abril 2026</td>
+          <td class="r amt-g">600,00 €</td>
+          <td class="r amt-m">126,00 €</td>
+          <td class="r amt-p">−90,00 €</td>
+          <td class="r amt-g">636,00 €</td>
+          <td><span class="badge badge-cob">Cobrada</span></td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="ingreso" data-cobro="pendiente">
+          <td class="dt">08/05/2026</td>
+          <td class="fn">F-2026-009</td>
+          <td><span class="badge badge-i">Ingreso</span></td>
+          <td>Hotel Costa Blanca SA</td>
+          <td class="concept">Mantenimiento web + analítica</td>
+          <td class="r amt-g">750,00 €</td>
+          <td class="r amt-m">157,50 €</td>
+          <td class="r amt-p">−112,50 €</td>
+          <td class="r amt-a">795,00 €</td>
+          <td><span class="badge badge-pend">Pendiente</span></td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="ingreso" data-cobro="cobrada">
+          <td class="dt">20/05/2026</td>
+          <td class="fn">F-2026-010</td>
+          <td><span class="badge badge-i">Ingreso</span></td>
+          <td>Boutique Mariposa SL</td>
+          <td class="concept">Campaña Instagram Ads mayo 2026</td>
+          <td class="r amt-g">1.200,00 €</td>
+          <td class="r amt-m">252,00 €</td>
+          <td class="r amt-p">−180,00 €</td>
+          <td class="r amt-g">1.272,00 €</td>
+          <td><span class="badge badge-cob">Cobrada</span></td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="gasto" data-cobro="">
+          <td class="dt">01/04/2026</td>
+          <td class="fn">ADBE-26-04</td>
+          <td><span class="badge badge-g">Gasto</span></td>
+          <td>Adobe Systems Ireland</td>
+          <td class="concept">Creative Cloud All Apps</td>
+          <td class="r amt-r">59,99 €</td>
+          <td class="r amt-m">12,60 €</td>
+          <td class="r amt-m">—</td>
+          <td class="r amt-r">72,59 €</td>
+          <td class="dt">—</td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="gasto" data-cobro="">
+          <td class="dt">05/04/2026</td>
+          <td class="fn">TEF-26-04</td>
+          <td><span class="badge badge-g">Gasto</span></td>
+          <td>Telefónica de España SAU</td>
+          <td class="concept">Internet fibra 600Mb + telefonía</td>
+          <td class="r amt-r">49,95 €</td>
+          <td class="r amt-m">10,49 €</td>
+          <td class="r amt-m">—</td>
+          <td class="r amt-r">60,44 €</td>
+          <td class="dt">—</td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="gasto" data-cobro="">
+          <td class="dt">05/04/2026</td>
+          <td class="fn">IBE-26-04-987654</td>
+          <td><span class="badge badge-g">Gasto</span></td>
+          <td>Iberdrola Clientes SAU</td>
+          <td class="concept">Suministro eléctrico — 05/03 a 04/04</td>
+          <td class="r amt-r">132,50 €</td>
+          <td class="r amt-m">27,83 €</td>
+          <td class="r amt-m">—</td>
+          <td class="r amt-r">160,33 €</td>
+          <td class="dt">—</td>
+          <td class="dt" style="font-size:.68rem">XML</td>
+        </tr>
+        <tr data-t="gasto" data-cobro="">
+          <td class="dt">15/04/2026</td>
+          <td class="fn">HUB-26-04</td>
+          <td><span class="badge badge-g">Gasto</span></td>
+          <td>Impact Hub Madrid SL</td>
+          <td class="concept">Cuota coworking abril 2026</td>
+          <td class="r amt-r">250,00 €</td>
+          <td class="r amt-m">52,50 €</td>
+          <td class="r amt-m">—</td>
+          <td class="r amt-r">302,50 €</td>
+          <td class="dt">—</td>
+          <td class="dt" style="font-size:.68rem">XLSX</td>
+        </tr>
+        <tr data-t="gasto" data-cobro="">
+          <td class="dt">02/05/2026</td>
+          <td class="fn">HUB-26-05</td>
+          <td><span class="badge badge-g">Gasto</span></td>
+          <td>Impact Hub Madrid SL</td>
+          <td class="concept">Coworking Plan Flex + Sala Andares (3h)</td>
+          <td class="r amt-r">295,00 €</td>
+          <td class="r amt-m">61,95 €</td>
+          <td class="r amt-m">—</td>
+          <td class="r amt-r">356,95 €</td>
+          <td class="dt">—</td>
+          <td class="dt" style="font-size:.68rem">JPG</td>
+        </tr>
+        <tr class="totals-row">
+          <td colspan="5" class="r" style="font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)">Totales</td>
+          <td class="r">
+            <div class="amt-g" style="font-size:.82rem">6.100,00 €</div>
+            <div class="amt-r" style="font-size:.72rem">787,44 €</div>
+          </td>
+          <td class="r amt-m" style="font-size:.8rem">1.446,37 €</td>
+          <td class="r amt-p" style="font-size:.8rem">−915,00 €</td>
+          <td class="r">
+            <div class="amt-g" style="font-size:.82rem">6.466,00 €</div>
+            <div class="amt-r" style="font-size:.72rem">952,81 €</div>
+          </td>
+          <td colspan="2"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ALERTAS -->
+<section id="alertas">
+  <div class="section-title">Alertas y observaciones</div>
+  <div class="alerts">
+    <div class="alert-item">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-body">
+        <strong>3.657 € pendientes de cobro — actuar antes de junio</strong>
+        <span>F-2026-007 (Clínica Dental Sonrisa, 2.862 €, emitida el 18/04) y F-2026-009 (Hotel Costa Blanca, 795 €, emitida el 08/05) están sin cobrar. Verificar vencimientos y enviar recordatorio si procede.</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">🆕</div>
+      <div class="alert-body">
+        <strong>Nuevo cliente: Clínica Dental Sonrisa SL</strong>
+        <span>Primera factura (F-2026-007) por 2.700 € de base. Es el cliente con mayor ticket del trimestre (44,3 % de la facturación Q2). Pendiente de cobro — alto impacto en el flujo de caja.</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">🏦</div>
+      <div class="alert-body">
+        <strong>IVA Q2 estimado a ingresar: 1.115,63 €</strong>
+        <span>IVA repercutido 1.281 € – IVA soportado 165,37 €. Presentar Modelo 303 en la AEAT antes del 20/07/2026. Provisionar este importe con independencia del estado de cobro de las facturas.</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">💜</div>
+      <div class="alert-body">
+        <strong>IRPF retenido en Q2: 915,00 €</strong>
+        <span>Ya descontado por los clientes en el momento del pago. Conserva este importe para la declaración anual de IRPF — no supone desembolso adicional.</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">🏢</div>
+      <div class="alert-body">
+        <strong>Coworking: gasto recurrente en aumento</strong>
+        <span>Impact Hub acumula 545 € en Q2 (69,2 % del total de gastos). La factura de mayo (HUB-26-05) incluye sala de reuniones extra (45 €), elevando el coste respecto a abril. Revisar si el plan actual es el óptimo.</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">📊</div>
+      <div class="alert-body">
+        <strong>Ratio de gastos: 12,9 % — vigilar tendencia</strong>
+        <span>Los gastos (787,44 €) representan el 12,9 % de la facturación neta (6.100 €), frente al 2,2 % del periodo anterior. El aumento se explica principalmente por el coworking. El margen bruto sigue siendo muy saludable (87,1 %).</span>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon">📁</div>
+      <div class="alert-body">
+        <strong>Datos extraídos de 4 formatos distintos</strong>
+        <span>PDF (F-2026-006), Excel XLSX (libro Q2 con 9 facturas), FacturaE XML (Iberdrola IBE-26-04-987654) e imagen JPG escaneada (Impact Hub HUB-26-05). Se deduplicaron 2 facturas que aparecían en múltiples fuentes.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  Dashboard Q2 2026 generado el 09/05/2026 · Estudio Creativo Vega SL (CIF B-12345678) · 10 facturas · 4 archivos fuente (PDF, XLSX, XML, JPG) · Datos procesados localmente
+</footer>
+
+<script>
+function filterTable(tipo, btn) {
+  document.querySelectorAll('#inv-table tbody tr[data-t]').forEach(function(r) {
+    var show = false;
+    if (tipo === 'todas') show = true;
+    else if (tipo === 'ingreso' || tipo === 'gasto') show = r.dataset.t === tipo;
+    else if (tipo === 'cobrada' || tipo === 'pendiente') show = r.dataset.cobro === tipo;
+    r.style.display = show ? '' : 'none';
+  });
+  document.querySelectorAll('.fbtn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
